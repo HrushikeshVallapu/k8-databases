@@ -42,10 +42,10 @@ spec:
         image: hrushikesh45/shipping:v1
         resources:
           requests:
-            cpu: "100m"
+            cpu: "500m"
             memory: "256Mi"
           limits:
-            cpu: "200m"
+            cpu: "1000m"
             memory: "512Mi"
         envFrom:
           - configMapRef:
@@ -88,4 +88,4 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 10
+        averageUtilization: 25
