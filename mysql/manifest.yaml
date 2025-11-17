@@ -2,8 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mysql
-  namespace: roboshop
-  labels: 
+  labels:
     component: mysql
     project: roboshop
     tier: database
@@ -16,27 +15,27 @@ kind: Service
 metadata:
   name: mysql-headless
   namespace: roboshop
-  labels:      
+  labels:
     component: mysql
     project: roboshop
     tier: database
 spec:
-  clusterIP: None 
+  clusterIP: None
   selector:
     component: mysql
     project: roboshop
     tier: database
   ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+  - protocol: TCP
+    port: 3306 # service port
+    targetPort: 3306 # container port
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
   namespace: roboshop
-  labels:      
+  labels:
     component: mysql
     project: roboshop
     tier: database
@@ -46,9 +45,9 @@ spec:
     project: roboshop
     tier: database
   ports:
-    - protocol: TCP
-      port: 27017
-      targetPort: 27017
+  - protocol: TCP
+    port: 3306 # service port
+    targetPort: 3306 # container port
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -66,13 +65,13 @@ spec:
       project: roboshop
       tier: database # has to match .spec.template.metadata.labels
   serviceName: "mysql-headless" # this should be headless service
-  replicas: 2 #by default is 1
+  replicas: 2 # by default is 1
   template:
     metadata:
       labels:
         component: mysql
         project: roboshop
-        tier: database  # has to match .spec.selector.matchLabels
+        tier: database
     spec:
       containers:
       - name: mysql
